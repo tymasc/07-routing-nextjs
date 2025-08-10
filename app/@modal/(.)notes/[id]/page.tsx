@@ -1,23 +1,11 @@
-"use client";
+import NoteModalClient from "./NotePreview.client";
 
-import Modal from "@/components/Modal/Modal";
-import { useRouter } from "next/navigation";
-import NotePreview from "@/components/NotePreview/NotePreview";
+interface NotePageProps {
+  params: Promise<{ id: string }>;
+}
 
-const id = "";
+export default async function NotePage({ params }: NotePageProps) {
 
-const NoteModalPage = () => {
-  const router = useRouter();
-
-  const handleClose = () => {
-    router.back();
-  };
-
-  return (
-    <Modal onClose={handleClose}>
-      <NotePreview id={id} />
-    </Modal>
-  );
-};
-
-export default NoteModalPage;
+  const { id } = await params;
+  return <NoteModalClient id={id} />;
+}
