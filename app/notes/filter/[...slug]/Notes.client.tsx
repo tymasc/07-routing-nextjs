@@ -26,7 +26,7 @@ export default function Notes({ notes, totalPages }: Props) {
     queryKey: ["notes", page, debouncedSearch],
     queryFn: () => fetchNotes({ page, search: debouncedSearch }),
     initialData: { notes, totalPages },
-    placeholderData:(prev) => prev,
+    placeholderData: (prev) => prev,
   });
 
   const handlePageChange = (newPage: number) => {

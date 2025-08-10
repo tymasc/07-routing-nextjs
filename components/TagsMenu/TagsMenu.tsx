@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import css from "./TagsMenu.module.css";
 import { NoteTags } from "@/types/note";
