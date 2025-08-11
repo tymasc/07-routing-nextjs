@@ -8,9 +8,9 @@ export default function NotesFilterLayout({
   sidebar: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="container">
       {children}
-      {sidebar}
+      <aside className="sidebar"> {sidebar} </aside>
     </div>
   );
 }

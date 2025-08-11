@@ -13,9 +13,10 @@ import { useDebounce } from "@/hooks/useDebounce";
 type Props = {
   notes: Note[];
   totalPages: number;
+  tag?: string;
 };
 
-export default function Notes({ notes, totalPages }: Props) {
+export default function Notes({ notes, totalPages, tag }: Props) {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,24 +24,20 @@ export default function Notes({ notes, totalPages }: Props) {
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["notes", page, debouncedSearch],
-    queryFn: () => fetchNotes({ page, search: debouncedSearch }),
+    queryKey: ["notes", page, debouncedSearch, tag],
+    queryFn: () => {
+      const options: { page: number; search?: string; tag?: string } = { page };
+
+      if (debouncedSearch) options.search = debouncedSearch;
+      if (tag) options.tag = tag;
+
+      return fetchNotes(options);
+    },
     initialData: { notes, totalPages },
     placeholderData: (prev) => prev,
   });
 
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    setPage(1);
-  };
-
-  const toggleModal = () => setIsModalOpen((prevv) => !prevv);
-
-  const noteData = data ?? { notes: [], totalPages: 1 };
+  const toggleModal = () => setIsModalOpen((prev) => !prev);
 
   return (
     <div>
@@ -48,14 +45,14 @@ export default function Notes({ notes, totalPages }: Props) {
         <button onClick={toggleModal}>Add Note</button>
       </div>
 
-      <SearchBox value={searchQuery} onChange={handleSearchChange} />
+      <SearchBox value={searchQuery} onChange={setSearchQuery} />
 
       {isLoading ? <p>Loading...</p> : <NoteList notes={data?.notes || []} />}
-      {noteData.totalPages > 1 && (
+      {data.totalPages > 1 && (
         <Pagination
           currentPage={page}
-          pageCount={noteData.totalPages}
-          onPageChange={handlePageChange}
+          pageCount={data.totalPages}
+          onPageChange={setPage}
         />
       )}
 

@@ -14,6 +14,7 @@ export interface FetchNotesParams {
   page: number;
   perPage?: number;
   search?: string;
+  tag?: string;
 }
 
 export interface FetchNotesResponse {
@@ -24,7 +25,7 @@ export interface FetchNotesResponse {
 export const fetchNotes = async (
   params: FetchNotesParams
 ): Promise<FetchNotesResponse> => {
-  const { page, search } = params;
+  const { page, search, tag } = params;
 
   const queryParams: Record<string, string | number> = {
     page,
@@ -32,6 +33,10 @@ export const fetchNotes = async (
 
   if (search?.trim()) {
     queryParams.search = search;
+  }
+
+  if (tag) {
+    queryParams.tag = tag;
   }
 
   const response = await instance.get<FetchNotesResponse>("", {
@@ -56,10 +61,5 @@ export const deleteNote = async (id: string): Promise<Note> => {
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
   const response = await instance.get<Note>(`/${id}`);
-  return response.data;
-};
-
-export const fetchCategories = async (): Promise<NoteTags[]> => {
-  const response = await instance.get<NoteTags[]>(`/categories`);
   return response.data;
 };

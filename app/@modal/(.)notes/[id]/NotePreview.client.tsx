@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal/Modal";
-import { useQuery } from "@tanstack/react-query";
+import { DehydratedState, useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
 
 interface NoteModalPreviewProps {
   id: string;
+  dehydratedState: DehydratedState;
 }
 
 export default function NoteModalPreviewClient({ id }: NoteModalPreviewProps) {
@@ -15,6 +16,7 @@ export default function NoteModalPreviewClient({ id }: NoteModalPreviewProps) {
   const { data, isLoading, error } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
   });
 
   const handleClose = () => router.back();
