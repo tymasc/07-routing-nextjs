@@ -35,7 +35,7 @@ export const fetchNotes = async (
     queryParams.search = search;
   }
 
-  if (tag) {
+  if (tag && tag !== "All") {
     queryParams.tag = tag;
   }
 
