@@ -11,7 +11,7 @@ const NotesPage = async ({ params }: NotesPageProps) => {
 
   const tag = slug?.[0] ?? "";
 
-  const fetchOptions = tag && tag !== "All" ? { page: 1 } : { page: 1 };
+  const fetchOptions = { page: 1, ...(tag && tag !== "All" ? { tag } : {}) };
 
   const { notes, totalPages } = await fetchNotes(fetchOptions);
 

@@ -1,4 +1,5 @@
 import React from "react";
+import css from "./LayoutNotes.module.css";
 
 export default function NotesFilterLayout({
   children,
@@ -8,9 +9,11 @@ export default function NotesFilterLayout({
   sidebar: React.ReactNode;
 }) {
   return (
-    <div className="container">
-      {children}
-      <aside className="sidebar"> {sidebar} </aside>
+    <div className={css.container}>
+      <main>
+        <div className={css.notesWrapper}> {children}</div>
+      </main>
+      <aside className={css.sidebar}> {sidebar} </aside>
     </div>
   );
 }

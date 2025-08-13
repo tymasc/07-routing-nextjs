@@ -45,9 +45,21 @@ export default function Notes({ notes, totalPages, tag }: Props) {
         <button onClick={toggleModal}>Add Note</button>
       </div>
 
-      <SearchBox value={searchQuery} onChange={setSearchQuery} />
+      <SearchBox
+        value={searchQuery}
+        onChange={(value) => {
+          setSearchQuery(value);
+          setPage(1);
+        }}
+      />
 
-      {isLoading ? <p>Loading...</p> : <NoteList notes={data?.notes || []} />}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : data.notes.length ? (
+        <NoteList notes={data.notes} />
+      ) : (
+        <p>No notes found.</p>
+      )}
       {data.totalPages > 1 && (
         <Pagination
           currentPage={page}

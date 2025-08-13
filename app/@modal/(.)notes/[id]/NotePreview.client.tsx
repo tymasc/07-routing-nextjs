@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import css from "./NotePreview.module.css";
 import Modal from "@/components/Modal/Modal";
-import { DehydratedState, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
 
 interface NoteModalPreviewProps {
   id: string;
-  dehydratedState: DehydratedState;
 }
 
 export default function NoteModalPreviewClient({ id }: NoteModalPreviewProps) {
@@ -37,8 +37,13 @@ export default function NoteModalPreviewClient({ id }: NoteModalPreviewProps) {
 
   return (
     <Modal onClose={handleClose}>
+      <button onClick={handleClose} className={css.button}>
+        ✕
+      </button>
       <h2>{data?.title}</h2>
       <p>{data?.content}</p>
+      <p>{data?.tag}</p>
+      <p>{data?.createdAt}</p>
     </Modal>
   );
 }
